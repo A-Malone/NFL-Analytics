@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+{% load staticfiles %} <!-- New line -->
+
+<html>
+    <head>
+        <title>PlayBook</title>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+        
+        <script src="http://code.jquery.com/jquery-2.1.1.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    </head>    
+
+    <body>
+    <script type="text/javascript"> 
+    $(document).ready(function() {
+        var queue = [];
+
+        var quarters = {{game_json|safe}};        
+        $.each(quarters, function( quarter, value ) {            
+            var events = value.pbp;            
+            $.each(events, function( index, value ) {
+                if(value.type != "drive"){
+                    return;
+                }
+                var team = value.team;
+                var plays = value.actions;
+                $.each(plays, function( index, value ) {
+                    var play = value;
+                    var to_back = {'team':team, 'quarter': quarter, 'play':play};
+                    queue.push(to_back);
+                });
+            });
+        });
+        var i = 0;
+        var send = function(){ 
+            if(i >= queue.length){
+                return;
+            }
+
+            //Ajax request
+            var str = "/PlayBook/" + {{gameid|safe}} + "/json/"
+            $.ajax({
+                type : "POST",
+                url : str,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(queue[i]),
+                dataType: 'text',
+            }).done(function(data){
+                console.log(data.message);
+            }).fail(function() {
+               console.log( "error" );
+            });
+            i++;
+        };
+        window.setInterval(send, 2000);
+        
+    });
+    </script>
+    <h1>{{ home }} vs. {{ away }}</h1>
+    <!--
+        
+        <div>        
+        {% for quarter in plays %}
+            <h3>Quarter</h3>
+            {% for play in quarter %}
+                <div class="play_container">{{ play.play_type }}</div>
+            {% endfor %}
+        {% endfor %}
+        </div>
+    -->
+    </body>
+</html>

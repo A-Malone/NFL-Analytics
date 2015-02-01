@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+{% load staticfiles %} <!-- New line -->
+
+<html>
+
+    <head>
+        <title>PlayBook</title>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+        
+        <script src="http://code.jquery.com/jquery-2.1.1.js"></script>
+    </head>
+
+    <body>
+        <h1>PlayBook</h1>
+        <h3>Games</h3>
+        <div>
+        {% for game in games %}
+            <a class="gamelink" href="/PlayBook/{{game.id}}">
+                <div class="subheader">{{ game }}</div>
+            </a>
+        {% endfor %}     
+        </div>   
+    </body>
+</html>
