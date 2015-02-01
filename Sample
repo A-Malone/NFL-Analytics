@@ -1,0 +1,33 @@
+u'yfd': 10, 
+u'updated': u'2015-01-03T23:36:41+00:00',
+u'clock': u'07:29',
+u'play_type': u'rush',
+u'sequence': 118,
+u'yard_line': 8,
+u'direction': u'Middle',
+u'summary': u'33-K.Williams to ARI 7 for -1 yard (42-C.Jones).',
+u'down': 1,
+u'participants': 
+    [
+        {u'position': u'RB', u'team': u'ARI', u'id': u'051ac116-6d32-4e77-91da-e0ce27d202da', u'jersey': 33, u'name': u'Kerwynn Williams'},
+        {u'position': u'SAF', u'team': u'CAR', u'id': u'fc506583-7edf-4e40-8047-83f60bea67a2', u'jersey': 42, u'name': u'Colin Jones'}
+    ],
+u'details': u'/2014/PST/1/ARI/CAR/plays/4f6c33c5-9fee-446f-b94a-72c6980ca68e.json',
+u'id': u'4f6c33c5-9fee-446f-b94a-72c6980ca68e', 
+u'type': u'play', 
+u'side': u'ARI'
+
+
+
+{"id":"29f74623-277f-4421-afe1-1f74ac48152b","clock":"05:28","type":"play",
+"summary":"28-J.Stewart runs 13 yards for a touchdown.","updated":"2015-01-03T21:58:58+00:00",
+"side":"ARI",
+"yard_line":13,
+"down":1,
+"yfd":10,
+"formation":"Shotgun",
+"direction":"Right",
+"participants":[{"id":"96a1fc85-5af7-49fa-a5ac-ddc06c205ced","name":"Jonathan Stewart","jersey":28,"position":"RB","team":"CAR"}],
+"details":"/2014/PST/1/ARI/CAR/plays/29f74623-277f-4421-afe1-1f74ac48152b.json",
+"play_type":"rush",
+"sequence":28}
