@@ -10,21 +10,40 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
         <!-- Optional theme -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-        
-        <script src="http://code.jquery.com/jquery-2.1.1.js"></script>
+        <link href="{% static 'css/cover.css' %}" rel="stylesheet" media="screen">    </head>
+        <link href="{% static 'css/main.css' %}" rel="stylesheet" media="screen">
     </head>
 
     <body>
-        <h1>PlayBook</h1>
-        <h3>Games</h3>
-        <div>
-        {% for game in games %}
-            <a class="gamelink" href="/PlayBook/{{game.id}}">
-                <div class="subheader">{{ game }}</div>
-            </a>
-        {% endfor %}     
-        </div>   
-    </body>
+    <h1 id="title" class="masthead-brand">PlayBook</h1>
+    <div class="site-wrapper">    
+      <div class="site-wrapper-inner">
+        <div class="cover-container">               
+          <div class="masthead clearfix">                          
+          </div>
+          <div class="inner cover">
+            <h1 class="cover-heading">Discover Live Games</h1>
+            <div class="link-container">
+            {% for game in games %}
+                <a href="/PlayBook/{{ game.id }}">
+                    <div class="game-link">
+                        {{ game }}
+                    </div>
+                </a>
+            {% endfor %}
+            </div>        
+          </div>          
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> 
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  </body>  
 </html>
+

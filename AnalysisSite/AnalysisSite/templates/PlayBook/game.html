@@ -12,32 +12,16 @@
         
         <script src="http://code.jquery.com/jquery-2.1.1.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-    </head>    
+        <link href="{% static 'css/cover.css' %}" rel="stylesheet" media="screen">    </head>
+        <link href="{% static 'css/main.css' %}" rel="stylesheet" media="screen">
+    </head>
 
     <body>
     <script type="text/javascript"> 
     $(document).ready(function() {
-        var queue = [];
-
-        var quarters = {{game_json|safe}};        
-        $.each(quarters, function( quarter, value ) {            
-            var events = value.pbp;            
-            $.each(events, function( index, value ) {
-                if(value.type != "drive"){
-                    return;
-                }
-                var team = value.team;
-                var plays = value.actions;
-                $.each(plays, function( index, value ) {
-                    var play = value;
-                    var to_back = {'team':team, 'quarter': quarter, 'play':play};
-                    queue.push(to_back);
-                });
-            });
-        });
         var i = 0;
-        var send = function(){ 
-            if(i >= queue.length){
+        var send = function(){
+            if(i >= {{last_play}}){
                 return;
             }
 
@@ -47,30 +31,91 @@
                 type : "POST",
                 url : str,
                 contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify(queue[i]),
+                data: JSON.stringify({"next":i}),
                 dataType: 'text',
             }).done(function(data){
-                console.log(data.message);
+                update(JSON.parse(data))
             }).fail(function() {
                console.log( "error" );
             });
             i++;
         };
-        window.setInterval(send, 2000);
-        
+        window.setInterval(send, 20000);
+        send(); //Sends the first update
+
+        var update = function(data){    
+            $("#score-home").html(data.score[0]);
+            $("#score-away").html(data.score[1]);
+            $("#summary-field").html(data.summ);
+            $("#time-box").html("Time Remaining:\n " + data.time);
+            $("#num-box").html("Play Number:\n " + data.num);
+            $("#pos").html(data.offense);
+            $("#dte").html(data.dist);
+            $("#yfd").html(data.yfd);
+
+            $("#rsh").html(Math.round(data.pred.Rush*10000)/100.0);
+            $("#psl").html(Math.round(data.pred["Pass Long"]*10000)/100.0);
+            $("#pss").html(Math.round(data.pred["Pass Short"]*10000)/100.0);
+            $("#opt").html(data.pred["Optimal"]);
+            //console.log(data.pred);
+            
+        };      
     });
     </script>
-    <h1>{{ home }} vs. {{ away }}</h1>
-    <!--
-        
-        <div>        
-        {% for quarter in plays %}
-            <h3>Quarter</h3>
-            {% for play in quarter %}
-                <div class="play_container">{{ play.play_type }}</div>
-            {% endfor %}
-        {% endfor %}
+
+    <div class="score-container">
+        <div class="row"> 
+            <h2 class="left-boxes">{{home}}</h2>
+            <h3 id="time-box">Time Remaining: 0:00</h3>
+            <h2 class="right-boxes">{{away}}</h2>
         </div>
-    -->
+        <div class="row"> 
+            <h2 id="score-home" class="left-boxes">0</h2>
+            <h3 id="num-box">Play Number:</h3>
+            <h2 id="score-away" class="right-boxes">0</h2>
+        </div>
+    </div>
+    <div class="data-container">
+        <div id="summary-field"></div>
+        <div class="half-container">
+            <h3 class="data-header">Stats:</h3>
+            <div class="row">
+                <div class="data-label">Posession</div>
+                <div id="pos" class="data-elem">Panthers</div>                               
+            </div>
+            <div class="row">
+                <div class="data-label">Yards to 1st</div>
+                <div id="yfd" class="data-elem">10</div>
+            </div>
+            <div class="row">
+                <div class="data-label">Distance to TD</div>
+                <div id="dte" class="data-elem">45</div>
+            </div>
+            <div class="row">
+                <div class="data-label"></div>
+                <div class="data-elem"></div>
+            </div>            
+        </div>
+        <div class="half-container">
+            <h3 class="data-header">Play Prediction:</h3>
+            <div class="row">
+                <div class="data-label">Rush</div>
+                <div id="rsh" class="data-elem">0</div>                               
+            </div>
+            <div class="row">
+                <div class="data-label">Pass - Short</div>
+                <div id="pss" class="data-elem">45</div>
+            </div>
+            <div class="row">
+                <div class="data-label">Pass - Long</div>
+                <div id="psl" class="data-elem">45</div>                 
+            </div>
+            <div class="row">
+                <div class="data-label">Optimal</div>
+                <div id="opt" class="data-elem"></div>
+            </div>            
+        </div>
+
+    </div>    
     </body>
 </html>

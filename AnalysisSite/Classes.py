@@ -37,6 +37,7 @@ class Play:
 		self.sequence = json["sequence"]
 		#Flag to signal this is useful data
 		self.isdata = True
+		self.summary = json['summary']
 
 		#Sets the score
 		self.score = score
@@ -48,10 +49,12 @@ class Play:
 		self.play_type = json["play_type"]
 		self.start_down = json["down"] if "down" in json.keys() else None
 		self.time = json["clock"] if "clock" in json.keys() else None
+		self.distance_to_first = None
+		self.position = None
 
 		if(json["play_type"] == "extrapoint" or json["play_type"] == "fieldgoal"):
 			if(json["summary"].lower().endswith("is good.")):
-				self.score[self.offense] += 1
+				self.score[self.offense] += 1			
 		else:
 			#Runs and passes
 			self.formation = json["formation"] if "formation" in json.keys() else None
@@ -332,8 +335,8 @@ class Situation:
 		self.diff_score = diff_score
 		self.team = team
 
-def update(down,distance_to_first,time,quarter,position,diff_score,team):
-	global play_hashtable
+def update(play_hashtable, down,distance_to_first,time,quarter,position,diff_score,team):
+	#global play_hashtable
 	situation = Situation(down,distance_to_first,time,quarter,position,diff_score,team)
 	current_state = {}
 	play_stats = play_hashtable[team].reference_situation(situation)
